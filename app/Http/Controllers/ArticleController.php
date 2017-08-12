@@ -66,7 +66,12 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        //
+        $article = Article::find($id);
+        if($article){
+            return Response::json($article);
+        }else{
+            return Response::json('Data Not Found.',404);
+        }
     }
 
     /**
