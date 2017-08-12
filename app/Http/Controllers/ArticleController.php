@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests\ArticleRequest;
 use App\Article;
+use App\Author;
 use App\Http\Requests;
 
 class ArticleController extends Controller
@@ -36,9 +37,24 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ArticleRequest $request)
     {
-        //
+        $author = Author::find($request->author_id);
+        if($author){
+            $article = Article::create([
+                'author_id' => $author->id,
+                'title'     => $request->title,
+                'url'       => $request->url,
+                'content'   => $request->content
+            ]);
+            if($article){
+                return 'Article Created!';
+            }else{
+                return Response::json('Internal Server Error.',500);
+            }
+        }else{
+            return Response::json('Author Not Found. Invalid author_id.',400);
+        }
     }
 
     /**

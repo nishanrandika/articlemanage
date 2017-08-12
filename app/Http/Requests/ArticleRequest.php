@@ -24,7 +24,8 @@ class ArticleRequest extends Request
     public function rules()
     {
         return [
-            //
+            'author_id' => 'required',
+            'url'       => 'unique:articles,url'
         ];
     }
 }
