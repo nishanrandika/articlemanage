@@ -94,7 +94,26 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $author = Author::find($request->author_id);
+        if($author){
+            $old_url = Article::where('url', '=', $request->url)
+                                ->where('id', '!=', $id)
+                                ->get();
+            if(count($old_url)>0){
+                return Response::json('Conflicts. URL already established.',409);
+            }
+
+            $article = Article::find($id);
+            $article->author_id = $request->author_id;
+            $article->title     = $request->title;
+            $article->url       = $request->url;
+            $article->content   = $request->content;
+            $article->save();
+
+            return 'Article Updated!';
+        }else{            
+            return Response::json('Author Not Found. Invalid author_id.',400);
+        }
     }
 
     /**
