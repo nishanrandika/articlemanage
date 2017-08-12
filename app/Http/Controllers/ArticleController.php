@@ -124,6 +124,12 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $article = Article::find($id);
+        if($article){
+            $article->delete();
+            return 'Article Deleted!';
+        }else{
+            return Response::json('Author Not Found. Invalid author_id.',400);
+        }
     }
 }
