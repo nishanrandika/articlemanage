@@ -136,7 +136,7 @@ class ArticleController extends Controller
             $article->delete();
             return 'Article Deleted!';
         }else{
-            return Response::json('Author Not Found. Invalid author_id.',400);
+            return Response::json('Article Not Found. Invalid id.',400);
         }
     }
 }
