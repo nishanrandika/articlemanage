@@ -8,6 +8,8 @@ use App\Http\Requests\ArticleRequest;
 use App\Article;
 use App\Author;
 use App\Http\Requests;
+use Response;
+use DB;
 
 class ArticleController extends Controller
 {
@@ -18,7 +20,9 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::all();
+        $articles = Article::select('articles.id', 'articles.title', 'authors.name as author', 'articles.content as summary', 'articles.url', DB::raw('DATE(articles.created_at) as createdAt'))
+                            ->leftJoin('authors', 'articles.author_id', '=', 'authors.id')
+                            ->get();
         return Response::json($articles);
     }
 
@@ -66,7 +70,10 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $article = Article::find($id);
+        $article = Article::select('articles.id', 'articles.title', 'authors.name as author', 'articles.content', 'articles.url', DB::raw('DATE(articles.created_at) as createdAt'))
+                            ->leftJoin('authors', 'articles.author_id', '=', 'authors.id')
+                            ->where('articles.id', '=', $id)
+                            ->first();
         if($article){
             return Response::json($article);
         }else{

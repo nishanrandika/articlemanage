@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AuthorRequest;
 use App\Author;
 use App\Http\Requests;
+use Response;
 
 class AuthorController extends Controller
 {
